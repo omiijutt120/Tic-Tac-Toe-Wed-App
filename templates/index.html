@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Tic Tac Toe</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+</head>
+<body>
+  <main class="container">
+    <h1>Tic Tac Toe</h1>
+
+    <div class="status">
+      {% if winner %}
+        {% if winner == 'Tie' %}
+          <div class="result">It's a tie.</div>
+        {% else %}
+          <div class="result">Player {{ winner }} wins!</div>
+        {% endif %}
+      {% else %}
+        <div class="turn">Current: <strong>{{ player }}</strong></div>
+      {% endif %}
+    </div>
+
+    <div class="board">
+      {% for i in range(9) %}
+        <div class="cell">
+          {% if board[i] or winner %}
+            <div class="symbol">{{ board[i] }}</div>
+          {% else %}
+            <form method="post" class="move-form">
+              <input type="hidden" name="cell" value="{{ i }}">
+              <button class="move-btn" aria-label="Play at {{ i }}">{{ board[i] }}</button>
+            </form>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+
+    <form method="post" action="{{ url_for('reset') }}" class="reset-form">
+      <button type="submit" class="reset-btn">Reset Game</button>
+    </form>
+
+    <p class="note">No JavaScript — all moves are processed on the server.</p>
+  </main>
+</body>
+</html>
